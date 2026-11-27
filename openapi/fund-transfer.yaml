@@ -1,0 +1,160 @@
+openapi: 3.0.3
+info:
+  title: Fund Transfer API (Illustrative)
+  version: 1.0.0
+  description: >
+    Fictional API definition for technical-writing practice.
+    This specification is not a Maybank API and is not connected to a real banking service.
+servers:
+  - url: https://api.example.com
+    description: Example host only; not a real service
+tags:
+  - name: Transfers
+    description: Example transfer operations
+paths:
+  /v1/transfers:
+    post:
+      tags:
+        - Transfers
+      summary: Create a transfer
+      description: >
+        Submits a fictional transfer request. All fields, constraints,
+        responses, and behaviours are illustrative and require confirmation
+        from an API owner before use in a real integration.
+      operationId: createTransfer
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Transfer details.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTransferRequest'
+            example:
+              sourceAccount: SOURCE-ACCOUNT-001
+              destinationAccount: DESTINATION-ACCOUNT-002
+              amount: 500.00
+              currency: MYR
+              description: Example transfer
+      responses:
+        '201':
+          description: Transfer request accepted (illustrative).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferResponse'
+              example:
+                transferId: TRF-EXAMPLE-10001
+                status: PENDING
+                amount: 500.00
+                currency: MYR
+                message: Transfer request accepted for processing
+        '400':
+          description: Request validation failed (illustrative).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication is missing or invalid (illustrative).
+        '403':
+          description: Caller is not authorised (illustrative).
+        '409':
+          description: Request conflicts with current state (illustrative).
+        '429':
+          description: Rate limit exceeded (illustrative).
+        '500':
+          description: Unexpected server error (illustrative).
+        '503':
+          description: Service temporarily unavailable (illustrative).
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    CreateTransferRequest:
+      type: object
+      required:
+        - sourceAccount
+        - destinationAccount
+        - amount
+        - currency
+      properties:
+        sourceAccount:
+          type: string
+          description: Fictional source-account reference.
+          example: SOURCE-ACCOUNT-001
+        destinationAccount:
+          type: string
+          description: Fictional destination-account reference.
+          example: DESTINATION-ACCOUNT-002
+        amount:
+          type: number
+          format: double
+          exclusiveMinimum: 0
+          description: Positive transfer amount (illustrative constraint).
+          example: 500.00
+        currency:
+          type: string
+          description: Currency code (illustrative).
+          example: MYR
+        description:
+          type: string
+          description: Optional transfer description.
+          example: Example transfer
+    TransferResponse:
+      type: object
+      required:
+        - transferId
+        - status
+        - amount
+        - currency
+        - message
+      properties:
+        transferId:
+          type: string
+          example: TRF-EXAMPLE-10001
+        status:
+          type: string
+          enum:
+            - PENDING
+          description: Illustrative processing state, not a settlement confirmation.
+        amount:
+          type: number
+          format: double
+          example: 500.00
+        currency:
+          type: string
+          example: MYR
+        message:
+          type: string
+          example: Transfer request accepted for processing
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              example: The request contains an invalid field.
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    type: string
+                    example: amount
+                  reason:
+                    type: string
+                    example: The value must be greater than zero.
+            correlationId:
+              type: string
+              example: CORR-EXAMPLE-001

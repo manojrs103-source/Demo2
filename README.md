@@ -14,7 +14,7 @@ This repository contains an illustrative API documentation project.
 
 ## Audience
 
-Application developers, integration engineers, QA engineers, and technical support teams.
+Application developers, engineers, QA engineers, and technical support teams.
 
 ## Documentation status
 
